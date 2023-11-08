@@ -1,0 +1,24 @@
+function addLogoToDocument() {
+  var documentId = '1-dMaikScfyBXaoLVwc15S8cZEtlhBo6AsK3drkYG3yE';
+  
+  var logoUrl = 'https://www.rv-it.college/images/banners/logo_IT_short_white.png';
+  
+  var document = DocumentApp.openById(documentId);
+  var body = document.getBody();
+  var image = body.appendImage(UrlFetchApp.fetch(logoUrl).getBlob());
+  var width = 100; 
+  var height = 50; 
+  image.setWidth(width).setHeight(height);
+  
+
+  var numPages = document.getNumChildren(DocumentApp.ElementType.BODY_SECTION);
+  for (var i = 0; i < numPages; i++) {
+    var page = document.getChild(i);
+    var pageIndex = body.getChildIndex(page);
+    
+    page.asParagraph().appendInlineImage(image);
+    page.asParagraph().setAlignment(DocumentApp.HorizontalAlignment.RIGHT);
+  }
+  
+  document.saveAndClose();
+}
